@@ -162,6 +162,14 @@ podman run ghcr.io/openchami/ochami:latest ochami --version
 
 ### Public Packages
 
+- `pkg/cloudinit` - Local cloud-init Jinja template rendering for external Go
+  tools and the CLI. `cloudinit.Render` accepts in-memory template, metadata,
+  and extra-variable documents and returns complete rendered text. It preserves
+  mapping order and does not read files, fetch HTTP data, or write output.
+  Engine types remain private, and callers can inspect `cloudinit.RenderError`
+  stages and wrapped causes. See `go doc github.com/openchami/ochami/pkg/cloudinit`,
+  the runnable examples, and [the compatibility contract](doc/jinja-compatibility.md).
+
 - `pkg/config` - Configuration loading, merging, cluster lookup, and service URI
   resolution. Use this package for any code that needs to work with ochami
   configuration. It is state-independent: the loaders (`config.Load`,
@@ -259,7 +267,8 @@ module's sources and fail on:
   with integer literals;
 - an EXIT STATUS table in ochami(1) that differs from the exit codes in
   `internal/cli/errors.go`;
-- exported `pkg/config` API that exposes koanf.
+- exported `pkg/config` API that exposes koanf, or `pkg/cloudinit` API that
+  exposes gojinja or YAML node types.
 
 Run them alone with `go test ./internal/conventions`. `make lint` checks the
 rest: commands use the runtime's streams and return errors rather than
